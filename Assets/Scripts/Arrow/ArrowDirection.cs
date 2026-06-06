@@ -21,4 +21,24 @@ public static class ArrowDirection
                 return 0;
         }
     }
+
+    public static Vector3 GetDirectionVector(char direction)
+    {
+        switch (direction)
+        {
+            case 'w':
+                return new Vector3(0,1,0);
+            case 's':
+                return new Vector3(0,-1,0);
+            case 'a':
+                return new Vector3(-1,0,0);
+            case 'd':
+                return new Vector3(1,0,0);
+            default:
+                Debug.LogError("Invalid direction");
+                return Vector2.zero;
+        }
+    }
+
+
 }

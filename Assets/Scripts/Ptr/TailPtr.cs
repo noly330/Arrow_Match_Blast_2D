@@ -23,7 +23,7 @@ public class TailPtr : MonoBehaviour
     }
 
 
-    private async UniTask ReduceSpriteAmount(int index)
+    private async UniTask ReduceSpriteAmount(int index)  //传的是线的索引
     {
         //先把所有BoardPoint的isOccupied设为false
         for(int i = 0; i < _gameMapSO.lines[index].points.Count; i++)
@@ -41,7 +41,11 @@ public class TailPtr : MonoBehaviour
         for(int i =0;i<_gameMapSO.lines[index].points.Count - 1; i++)
         {
             BoardPoint point = MapManager.Instance.pointsDic[_gameMapSO.lines[index].points[i].id];
-            await point.ReduceSpriteAmount(0.5f);
+            await point.ReduceSpriteAmount(0.1f);
         }
+
+        EventCenter.Broadcast<Events.OnArrowAllPointImageClear>(new Events.OnArrowAllPointImageClear{
+            arrowID = index,
+        });
     }
 }

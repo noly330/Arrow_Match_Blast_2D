@@ -114,6 +114,7 @@ public class MapManager : MonoBehaviour
                     //初始化箭头对应的逻辑点，并生成箭头的Sprite
                     BoardPoint haedBoardPoint = pointsDic[line.points[j].id];
                     haedBoardPoint.lineID = i;
+                    haedBoardPoint.direction = line.points[j].direction;
                     haedBoardPoint.isOccupied = true;
                     ArrowHead arrowHead = Instantiate(_arrowHeadPrefab, _arrowContainer).GetComponent<ArrowHead>();
 
@@ -133,6 +134,7 @@ public class MapManager : MonoBehaviour
                 //初始化箭体对应的逻辑点，并生成箭体的Sprite
                 BoardPoint boardPoint = pointsDic[line.points[j].id];
                 boardPoint.lineID = i;
+                boardPoint.direction = line.points[j].direction;
                 boardPoint.isOccupied = true;
                 ArrowBody arrowBody = Instantiate(_arrowBodyPrefab, _arrowContainer).GetComponent<ArrowBody>();
                 //让他们互相引用

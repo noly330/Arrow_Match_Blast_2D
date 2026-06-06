@@ -1,14 +1,32 @@
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
+using System;
 
 public class BoardPoint : MonoBehaviour
 {
     public string id;
+    public char direction;
     public int lineID;
     public bool isOccupied;
     private SpriteRenderer _spriteRenderer;
-    
-    
+
+
+    private void OnEnable()
+    {
+        isOccupied = false;
+
+        EventCenter.AddListener<Events.OnArrowAllPointImageClear>(OnArrowAllPointImageClear);
+    }
+
+
+    private void OnDisable()
+    {
+        isOccupied = false;
+        EventCenter.RemoveListener<Events.OnArrowAllPointImageClear>(OnArrowAllPointImageClear);
+    }
+
+
     public void SetSprite(SpriteRenderer spriteRenderer)
     {
         this._spriteRenderer = spriteRenderer;
@@ -33,5 +51,51 @@ public class BoardPoint : MonoBehaviour
             await UniTask.Yield();
         }
         _spriteRenderer.transform.gameObject.SetActive(false);
+    }
+
+    public async UniTask MoveArrowHead()
+    {
+        if (_spriteRenderer == null)
+        {
+            return;
+        }
+
+        float elapsed = 0f;
+        while (elapsed < 20f)
+        {
+            if (_spriteRenderer == null)
+            {
+                return;
+            }
+            elapsed += Time.deltaTime;
+            Vector3 nextPosition = _spriteRenderer.transform.position + ArrowDirection.GetDirectionVector(direction) * 4f * Time.deltaTime;
+            _spriteRenderer.transform.position = nextPosition;
+            await UniTask.Yield();
+        }
+    }
+
+    public bool isIncrease;
+    public async UniTask IncreaseArrowHeadBody()
+    {
+        ArrowHead arrowHead = _spriteRenderer.GetComponent<ArrowHead>();
+        if (arrowHead == null)
+        {
+            Debug.LogError("这个点上的图片不是箭头");
+        }
+        isIncrease = true;
+        while (isIncrease)
+        {
+            float nextHeight = arrowHead.arrowHeadBody.size.y + 40f * Time.deltaTime;
+            arrowHead.arrowHeadBody.size = new Vector2(arrowHead.arrowHeadBody.size.x, nextHeight);
+            await UniTask.Yield();
+        }
+
+    }
+    private void OnArrowAllPointImageClear(Events.OnArrowAllPointImageClear message)
+    {
+        if(message.arrowID == lineID)
+        {
+            isIncrease = false;
+        }
     }
 }

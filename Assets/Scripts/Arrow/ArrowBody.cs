@@ -5,9 +5,11 @@ public class ArrowBody : MonoBehaviour
     public Transform pivotTransform;
     private BoardPoint _boardPoint;
     private Collider2D _collider2D;
+    private Camera _camera;
 
     private void Awake()
     {
+        _camera = Camera.main;
         _collider2D = GetComponent<Collider2D>();
     }
 
@@ -31,8 +33,10 @@ public class ArrowBody : MonoBehaviour
 
     private void TryClick(Vector2 screenPosition)
     {
-        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+        //将屏幕坐标转换为世界坐标
+        Vector2 worldPosition = _camera.ScreenToWorldPoint(screenPosition);
 
+        //检测点击的地方在不在碰撞体内部
         if (_collider2D != null && _collider2D.OverlapPoint(worldPosition))
         {
             OnClicked();
