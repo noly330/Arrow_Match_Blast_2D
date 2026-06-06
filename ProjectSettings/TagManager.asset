@@ -38,6 +38,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Low
+    uniqueID: 4228259825
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Mid
+    uniqueID: 1678141753
+    locked: 0
+  - name: Hight
+    uniqueID: 1136708197
     locked: 0
