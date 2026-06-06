@@ -5,6 +5,7 @@ using UnityEngine;
 public class ArrowHead : MonoBehaviour
 {
     public Transform pivotTransform;
+    public SpriteRenderer arrowHeadBody;
     private BoardPoint _boardPoint;
     private Collider2D _collider2D;
 
