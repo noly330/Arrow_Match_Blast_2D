@@ -25,6 +25,7 @@ public class GameMapSOEditor : Editor
         GameMapSO map = (GameMapSO)target;
 
         serializedObject.Update();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("mapID"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("mapWidth"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("mapHeight"));
         _showRawLines = EditorGUILayout.Foldout(_showRawLines, "Raw Lines");

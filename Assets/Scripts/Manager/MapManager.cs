@@ -15,6 +15,7 @@ public class MapManager : MonoBehaviour
         Instance = this;
     }
     [SerializeField] private List<GameMapSO> _maps;
+    public List<GameMapSO> GetMaps() => _maps;
     public GameMapSO currentMap;
     [SerializeField] private BoardPoint _pointPrefab;
     [SerializeField] private Transform _pointContainer;
@@ -24,6 +25,7 @@ public class MapManager : MonoBehaviour
     [SerializeField] private GameObject _arrowHeadPrefab;
 
     public Dictionary<string, BoardPoint> pointsDic = new Dictionary<string, BoardPoint>();
+    private Dictionary<int,GameMapSO> _mapDic = new Dictionary<int,GameMapSO>();
     private int _mapWidth;
     public int GetMapWidth()=> _mapWidth;
     private int _mapHeight;
@@ -31,15 +33,15 @@ public class MapManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventCenter.AddListener<Events.OnLoadMap>(OnLoadMapSuccess);
+        EventCenter.AddListener<Events.OnLoadMapSucceed>(OnLoadMapSuccess);
     }
 
     private void OnDisable()
     {
-        EventCenter.RemoveListener<Events.OnLoadMap>(OnLoadMapSuccess);
+        EventCenter.RemoveListener<Events.OnLoadMapSucceed>(OnLoadMapSuccess);
     }
 
-    private void OnLoadMapSuccess(Events.OnLoadMap message)
+    private void OnLoadMapSuccess(Events.OnLoadMapSucceed message)
     {
         ClearMap();
         GeneratePoints(message.mapID);
@@ -49,7 +51,14 @@ public class MapManager : MonoBehaviour
     private void Start()
     {
         ClearMap();
-        EventCenter.Broadcast<Events.OnLoadMap>(new Events.OnLoadMap { mapID = 0 });
+
+        _mapDic.Clear();
+        for (int i = 0; i < _maps.Count; i++)
+        {
+            _mapDic.Add(_maps[i].mapID, _maps[i]);
+            Debug.Log($"Add map {_maps[i].mapID} to mapDic");
+        }
+        EventCenter.Broadcast<Events.OnLoadMapSucceed>(new Events.OnLoadMapSucceed { mapID = 1 });
     }
     public void ClearMap()
     {
@@ -63,16 +72,16 @@ public class MapManager : MonoBehaviour
         }
         pointsDic.Clear();
     }
-    public void GeneratePoints(int mapIndex)
+    public void GeneratePoints(int mapID)
     {
 
-        if (mapIndex < 0 || mapIndex >= _maps.Count)
+        if (!_mapDic.ContainsKey(mapID))
         {
-            Debug.LogError($"Invalid map index: {mapIndex}");
+            Debug.LogError($"Invalid map ID: {mapID}");
             return;
         }
 
-        currentMap = _maps[mapIndex];
+        currentMap = _mapDic[mapID];
         _mapWidth = currentMap.mapWidth;
         _mapHeight = currentMap.mapHeight;
         _spacing = 0.4f;
@@ -98,14 +107,14 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    private void GenerateArrow(int mapIndex)
+    private void GenerateArrow(int mapID)
     {
-        if (mapIndex < 0 || mapIndex >= _maps.Count)
+        if (!_mapDic.ContainsKey(mapID))
         {
-            Debug.LogError($"Invalid map index: {mapIndex}");
+            Debug.LogError($"Invalid map ID: {mapID}");
             return;
         }
-        GameMapSO map = _maps[mapIndex];
+        GameMapSO map = _mapDic[mapID];
         for (int i = 0; i < map.lines.Count; i++)
         {
             Line line = map.lines[i];
