@@ -7,7 +7,7 @@ public class MapManager : MonoBehaviour
     public static MapManager Instance;
     private void Awake()
     {
-        if(Instance != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
@@ -25,7 +25,9 @@ public class MapManager : MonoBehaviour
 
     public Dictionary<string, BoardPoint> pointsDic = new Dictionary<string, BoardPoint>();
     private int _mapWidth;
+    public int GetMapWidth()=> _mapWidth;
     private int _mapHeight;
+    public int GetMapHeight()=> _mapHeight;
 
     private void OnEnable()
     {
@@ -63,7 +65,7 @@ public class MapManager : MonoBehaviour
     }
     public void GeneratePoints(int mapIndex)
     {
-        
+
         if (mapIndex < 0 || mapIndex >= _maps.Count)
         {
             Debug.LogError($"Invalid map index: {mapIndex}");
@@ -90,8 +92,8 @@ public class MapManager : MonoBehaviour
 
                 Vector3 position = new Vector3(posX, posY, 0f);
                 BoardPoint point = Instantiate(_pointPrefab, position, Quaternion.identity, _pointContainer);
-                point.id = $"{x},{y}";
-                pointsDic.Add(point.id, point);
+                point.pointInfo = new Point { id = $"{x},{y}" };
+                pointsDic.Add(point.pointInfo.id, point);
             }
         }
     }
@@ -114,7 +116,7 @@ public class MapManager : MonoBehaviour
                     //初始化箭头对应的逻辑点，并生成箭头的Sprite
                     BoardPoint haedBoardPoint = pointsDic[line.points[j].id];
                     haedBoardPoint.lineID = i;
-                    haedBoardPoint.direction = line.points[j].direction;
+                    haedBoardPoint.pointInfo.direction = line.points[j].direction;
                     haedBoardPoint.isOccupied = true;
                     ArrowHead arrowHead = Instantiate(_arrowHeadPrefab, _arrowContainer).GetComponent<ArrowHead>();
 
@@ -128,13 +130,13 @@ public class MapManager : MonoBehaviour
                     Vector3 headPivotOffset = headChildPivot.position - arrowHead.transform.position;
                     arrowHead.transform.position = haedBoardPoint.transform.position - headPivotOffset;
 
-                    
+
                     continue;
                 }
                 //初始化箭体对应的逻辑点，并生成箭体的Sprite
                 BoardPoint boardPoint = pointsDic[line.points[j].id];
                 boardPoint.lineID = i;
-                boardPoint.direction = line.points[j].direction;
+                boardPoint.pointInfo.direction = line.points[j].direction;
                 boardPoint.isOccupied = true;
                 ArrowBody arrowBody = Instantiate(_arrowBodyPrefab, _arrowContainer).GetComponent<ArrowBody>();
                 //让他们互相引用

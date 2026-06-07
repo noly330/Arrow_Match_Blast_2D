@@ -4,7 +4,17 @@ public static class Events
     {
         public int mapID;                                                                                                
     }
-    public class OnArrowClicked
+
+    public class OnArrowClickStart
+    {
+        public int arrowID;
+    }
+    public class OnArrowClickSucceed
+    {
+        public int arrowID;
+    }
+
+    public class OnArrowClickFail
     {
         public int arrowID;
     }

@@ -46,7 +46,7 @@ public class ArrowHead : MonoBehaviour
     private void OnClicked()
     {
         int lineID = _boardPoint.lineID;
-        EventCenter.Broadcast<Events.OnArrowClicked>(new Events.OnArrowClicked{
+        EventCenter.Broadcast<Events.OnArrowClickStart>(new Events.OnArrowClickStart{
             arrowID = lineID,
         });
     }
