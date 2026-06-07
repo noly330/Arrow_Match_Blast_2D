@@ -7,6 +7,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    private int _maxHealth = 3;
+    private int _currentHealth = 3;
+    public int GetCurrentHealth() => _currentHealth;
+
     [Header("表示箭身消失的时间，越小速度越快")]
     public float reduceTime = 0.1f;
     public float moveSpeed => (0.4f / reduceTime);
@@ -23,11 +27,34 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
+        EventCenter.AddListener<Events.OnLoadMapSucceed>(OnLoadMapSucceed);
         EventCenter.AddListener<Events.OnArrowClickStart>(OnArrowClickStart);
+        EventCenter.AddListener<Events.OnArrowClickFail>(OnArrowClickFail);
     }
+
+
+
     private void OnDisable()
     {
+        EventCenter.RemoveListener<Events.OnLoadMapSucceed>(OnLoadMapSucceed);
         EventCenter.RemoveListener<Events.OnArrowClickStart>(OnArrowClickStart);
+        EventCenter.RemoveListener<Events.OnArrowClickFail>(OnArrowClickFail);
+    }
+
+
+
+    private void OnLoadMapSucceed(Events.OnLoadMapSucceed succeed)
+    {
+        _currentHealth = _maxHealth;
+    }
+    private void OnArrowClickFail(Events.OnArrowClickFail fail)
+    {
+        _currentHealth--;
+        EventCenter.Broadcast<Events.OnHeartUpdate>(new Events.OnHeartUpdate());
+        if(_currentHealth <= 0)
+        {
+            EventCenter.Broadcast<Events.OnGameFail>(new Events.OnGameFail());
+        }
     }
 
     private void OnArrowClickStart(Events.OnArrowClickStart message)

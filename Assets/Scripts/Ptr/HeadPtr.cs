@@ -31,7 +31,6 @@ public class HeadPtr : MonoBehaviour
         {
             return;
         }
-        Debug.Log($"MoveArrowHead {arrowID}");
 
         int headIndex = _gameMapSO.lines[arrowID].points.Count - 1;
         string headID = _gameMapSO.lines[arrowID].points[headIndex].id;
@@ -41,7 +40,6 @@ public class HeadPtr : MonoBehaviour
             Debug.LogError($"头点 {headID} 不存在");
             return;
         }
-        Debug.Log($"移动箭头 {headPoint.pointInfo.id}");
         headPoint.MoveArrowHead().Forget();
 
         if(_gameMapSO.lines[arrowID].points.Count == 1)

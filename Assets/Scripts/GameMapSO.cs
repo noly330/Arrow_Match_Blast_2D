@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class GameMapSO : ScriptableObject
 {
+    public int mapID;
     public int mapWidth;
     public int mapHeight;
     public List<Line> lines;

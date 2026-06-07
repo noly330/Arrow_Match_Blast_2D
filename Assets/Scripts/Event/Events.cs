@@ -1,8 +1,18 @@
 public static class Events
 {
-    public class OnLoadMap
+    public class OnLoadMapSucceed
     {
         public int mapID;                                                                                                
+    }
+
+    public class OnGameFail
+    {
+        
+    }
+
+    public class OnHeartUpdate
+    {
+        
     }
 
     public class OnArrowClickStart
