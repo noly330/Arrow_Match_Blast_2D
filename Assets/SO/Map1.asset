@@ -32,3 +32,211 @@ MonoBehaviour:
       direction: 119
     - id: 3,9
       direction: 119
+  - points:
+    - id: 2,9
+      direction: 97
+    - id: 1,9
+      direction: 97
+  - points:
+    - id: 0,2
+      direction: 115
+    - id: 0,1
+      direction: 115
+    - id: 0,0
+      direction: 100
+    - id: 1,0
+      direction: 100
+  - points:
+    - id: 1,1
+      direction: 119
+    - id: 1,2
+      direction: 119
+    - id: 1,3
+      direction: 119
+    - id: 1,4
+      direction: 100
+    - id: 2,4
+      direction: 100
+    - id: 3,4
+      direction: 115
+    - id: 3,3
+      direction: 115
+    - id: 3,2
+      direction: 100
+    - id: 4,2
+      direction: 100
+    - id: 5,2
+      direction: 100
+    - id: 6,2
+      direction: 100
+    - id: 7,2
+      direction: 100
+    - id: 8,2
+      direction: 100
+    - id: 9,2
+      direction: 100
+  - points:
+    - id: 0,3
+      direction: 119
+    - id: 0,4
+      direction: 119
+    - id: 0,5
+      direction: 119
+    - id: 0,6
+      direction: 119
+  - points:
+    - id: 1,7
+      direction: 100
+    - id: 2,7
+      direction: 115
+    - id: 2,6
+      direction: 97
+    - id: 1,6
+      direction: 115
+    - id: 1,5
+      direction: 100
+    - id: 2,5
+      direction: 100
+    - id: 3,5
+      direction: 100
+  - points:
+    - id: 3,6
+      direction: 119
+    - id: 3,7
+      direction: 100
+    - id: 4,7
+      direction: 119
+    - id: 4,8
+      direction: 119
+    - id: 4,9
+      direction: 119
+  - points:
+    - id: 4,6
+      direction: 100
+    - id: 5,6
+      direction: 100
+    - id: 6,6
+      direction: 100
+  - points:
+    - id: 5,8
+      direction: 115
+    - id: 5,7
+      direction: 115
+  - points:
+    - id: 5,9
+      direction: 100
+    - id: 6,9
+      direction: 100
+    - id: 7,9
+      direction: 100
+    - id: 8,9
+      direction: 100
+    - id: 9,9
+      direction: 100
+  - points:
+    - id: 6,8
+      direction: 100
+    - id: 7,8
+      direction: 100
+    - id: 8,8
+      direction: 115
+    - id: 8,7
+      direction: 115
+  - points:
+    - id: 9,6
+      direction: 119
+    - id: 9,7
+      direction: 119
+    - id: 9,8
+      direction: 119
+  - points:
+    - id: 6,7
+      direction: 100
+    - id: 7,7
+      direction: 115
+    - id: 7,6
+      direction: 100
+    - id: 8,6
+      direction: 100
+  - points:
+    - id: 2,3
+      direction: 115
+    - id: 2,2
+      direction: 115
+    - id: 2,1
+      direction: 115
+  - points:
+    - id: 2,0
+      direction: 100
+    - id: 3,0
+      direction: 100
+    - id: 4,0
+      direction: 100
+    - id: 5,0
+      direction: 119
+    - id: 5,1
+      direction: 100
+    - id: 6,1
+      direction: 100
+  - points:
+    - id: 3,1
+      direction: 100
+    - id: 4,1
+      direction: 100
+  - points:
+    - id: 9,1
+      direction: 115
+    - id: 9,0
+      direction: 115
+  - points:
+    - id: 7,1
+      direction: 100
+    - id: 8,1
+      direction: 115
+    - id: 8,0
+      direction: 115
+  - points:
+    - id: 7,0
+      direction: 115
+  - points:
+    - id: 6,0
+      direction: 115
+  - points:
+    - id: 7,5
+      direction: 100
+    - id: 8,5
+      direction: 100
+    - id: 9,5
+      direction: 100
+  - points:
+    - id: 9,4
+      direction: 97
+    - id: 8,4
+      direction: 97
+    - id: 7,4
+      direction: 97
+    - id: 6,4
+      direction: 97
+    - id: 5,4
+      direction: 97
+    - id: 4,4
+      direction: 115
+    - id: 4,3
+      direction: 100
+    - id: 5,3
+      direction: 100
+    - id: 6,3
+      direction: 100
+    - id: 7,3
+      direction: 100
+    - id: 8,3
+      direction: 100
+    - id: 9,3
+      direction: 100
+  - points:
+    - id: 4,5
+      direction: 100
+    - id: 5,5
+      direction: 100
+    - id: 6,5
+      direction: 100

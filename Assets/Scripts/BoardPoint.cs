@@ -43,12 +43,23 @@ public class BoardPoint : MonoBehaviour
         float elapsed = 0f;
         while (elapsed < time)
         {
+            if (_spriteRenderer == null)
+            {
+                return;
+            }
+
             elapsed += Time.deltaTime;
 
             float nextHeight = Mathf.Lerp(startHeight, 0f, elapsed / time);
             _spriteRenderer.size = new Vector2(startWidth, nextHeight);
             await UniTask.Yield();
         }
+
+        if (_spriteRenderer == null)
+        {
+            return;
+        }
+
         _spriteRenderer.transform.gameObject.SetActive(false);
     }
 
@@ -77,14 +88,25 @@ public class BoardPoint : MonoBehaviour
     public bool isIncrease;
     public async UniTask IncreaseArrowHeadBody()
     {
+        if (_spriteRenderer == null)
+        {
+            return;
+        }
+
         ArrowHead arrowHead = _spriteRenderer.GetComponent<ArrowHead>();
         if (arrowHead == null)
         {
             Debug.LogError("这个点上的图片不是箭头");
+            return;
         }
         isIncrease = true;
         while (isIncrease)
         {
+            if (_spriteRenderer == null || arrowHead == null || arrowHead.arrowHeadBody == null)
+            {
+                return;
+            }
+
             float nextHeight = arrowHead.arrowHeadBody.size.y + GameManager.Instance.moveSpeed * 10f * Time.deltaTime;
             arrowHead.arrowHeadBody.size = new Vector2(arrowHead.arrowHeadBody.size.x, nextHeight);
             await UniTask.Yield();
