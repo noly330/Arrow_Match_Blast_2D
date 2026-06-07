@@ -5,8 +5,7 @@ using System;
 
 public class BoardPoint : MonoBehaviour
 {
-    public string id;
-    public char direction;
+    public Point pointInfo;
     public int lineID;
     public bool isOccupied;
     private SpriteRenderer _spriteRenderer;
@@ -59,6 +58,7 @@ public class BoardPoint : MonoBehaviour
         {
             return;
         }
+        Debug.Log($"开始移动箭头 {pointInfo.id}");
 
         float elapsed = 0f;
         while (elapsed < 20f)
@@ -68,7 +68,7 @@ public class BoardPoint : MonoBehaviour
                 return;
             }
             elapsed += Time.deltaTime;
-            Vector3 nextPosition = _spriteRenderer.transform.position + ArrowDirection.GetDirectionVector(direction) * 4f * Time.deltaTime;
+            Vector3 nextPosition = _spriteRenderer.transform.position + ArrowDirection.GetDirectionVector(pointInfo.direction) * GameManager.Instance.moveSpeed * Time.deltaTime;
             _spriteRenderer.transform.position = nextPosition;
             await UniTask.Yield();
         }
@@ -85,7 +85,7 @@ public class BoardPoint : MonoBehaviour
         isIncrease = true;
         while (isIncrease)
         {
-            float nextHeight = arrowHead.arrowHeadBody.size.y + 40f * Time.deltaTime;
+            float nextHeight = arrowHead.arrowHeadBody.size.y + GameManager.Instance.moveSpeed * 10f * Time.deltaTime;
             arrowHead.arrowHeadBody.size = new Vector2(arrowHead.arrowHeadBody.size.x, nextHeight);
             await UniTask.Yield();
         }
@@ -93,9 +93,14 @@ public class BoardPoint : MonoBehaviour
     }
     private void OnArrowAllPointImageClear(Events.OnArrowAllPointImageClear message)
     {
-        if(message.arrowID == lineID)
+        if (message.arrowID == lineID)
         {
             isIncrease = false;
         }
+    }
+
+    public void SetColor(Color color)
+    {
+        _spriteRenderer.color = color;
     }
 }

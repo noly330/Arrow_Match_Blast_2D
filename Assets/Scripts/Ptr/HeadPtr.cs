@@ -9,17 +9,18 @@ public class HeadPtr : MonoBehaviour
     private GameMapSO _gameMapSO;
     private void OnEnable()
     {
-        EventCenter.AddListener<Events.OnArrowClicked>(OnArrowClicked);
+        EventCenter.AddListener<Events.OnArrowClickSucceed>(OnArrowClickSucceed);
     }
 
     private void OnDisable() {
-        EventCenter.RemoveListener<Events.OnArrowClicked>(OnArrowClicked);
+        EventCenter.RemoveListener<Events.OnArrowClickSucceed>(OnArrowClickSucceed);
 
 
     }
 
-    private void OnArrowClicked(Events.OnArrowClicked clicked)
+    private void OnArrowClickSucceed(Events.OnArrowClickSucceed clicked)
     {
+        
         _gameMapSO = MapManager.Instance.currentMap;
         MoveArrowHead(clicked.arrowID).Forget();
     }
@@ -30,19 +31,23 @@ public class HeadPtr : MonoBehaviour
         {
             return;
         }
+        Debug.Log($"MoveArrowHead {arrowID}");
 
         int headIndex = _gameMapSO.lines[arrowID].points.Count - 1;
         string headID = _gameMapSO.lines[arrowID].points[headIndex].id;
         BoardPoint headPoint = MapManager.Instance.pointsDic[headID];
         if(headPoint == null)
         {
+            Debug.LogError($"头点 {headID} 不存在");
             return;
         }
-        if (!headPoint.isOccupied)
+        Debug.Log($"移动箭头 {headPoint.pointInfo.id}");
+        headPoint.MoveArrowHead().Forget();
+
+        if(_gameMapSO.lines[arrowID].points.Count == 1)
         {
             return;
         }
-        headPoint.MoveArrowHead().Forget();
         headPoint.IncreaseArrowHeadBody().Forget();
     }
 }
