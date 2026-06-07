@@ -5,6 +5,10 @@ public static class Events
         public int mapID;                                                                                                
     }
 
+    public class OnGameWin
+    {
+        
+    }
     public class OnGameFail
     {
         
