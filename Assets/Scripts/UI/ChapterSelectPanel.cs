@@ -29,7 +29,7 @@ public class ChapterSelectPanel : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         EventCenter.RemoveListener<Events.OnLoadMapSucceed>(OnLoadMapSucceed);
     }

@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     private int _currentScore = 0;
     private float _scoreTime = 3f;
     private bool _hasTriggeredWin;
+    private readonly HashSet<int> _succeededArrowIds = new HashSet<int>();
+    private float _nextClickTime;
     public void AddScore()
     {
         _currentScore++;
@@ -36,7 +38,7 @@ public class GameManager : MonoBehaviour
     private async UniTask BroadcastGameWinDelay()
     {
         _hasTriggeredWin = true;
-        await UniTask.Delay(TimeSpan.FromSeconds(2));
+        await UniTask.Delay(TimeSpan.FromSeconds(1));
         EventCenter.Broadcast<Events.OnGameWin>(new Events.OnGameWin());
     }
 
@@ -54,24 +56,32 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         EventCenter.AddListener<Events.OnLoadMapSucceed>(OnLoadMapSucceed);
+        EventCenter.AddListener<Events.OnArrowAllPointImageClear>(OnArrowAllPointImageClear);
         EventCenter.AddListener<Events.OnArrowClickStart>(OnArrowClickStart);
         EventCenter.AddListener<Events.OnArrowClickFail>(OnArrowClickFail);
     }
 
 
-
     private void OnDisable()
     {
         EventCenter.RemoveListener<Events.OnLoadMapSucceed>(OnLoadMapSucceed);
+        EventCenter.RemoveListener<Events.OnArrowAllPointImageClear>(OnArrowAllPointImageClear);
         EventCenter.RemoveListener<Events.OnArrowClickStart>(OnArrowClickStart);
         EventCenter.RemoveListener<Events.OnArrowClickFail>(OnArrowClickFail);
     }
 
 
+    private void OnArrowAllPointImageClear(Events.OnArrowAllPointImageClear clear)
+    {
+        AddScore();
+    }
 
     private void OnLoadMapSucceed(Events.OnLoadMapSucceed succeed)
     {
         _currentHealth = _maxHealth;
+        _succeededArrowIds.Clear();
+        _nextClickTime = 0f;
+        EventCenter.Broadcast<Events.OnHeartUpdate>(new Events.OnHeartUpdate());
     }
     private void OnArrowClickFail(Events.OnArrowClickFail fail)
     {
@@ -86,15 +96,21 @@ public class GameManager : MonoBehaviour
     private void OnArrowClickStart(Events.OnArrowClickStart message)
     {
         Debug.Log(message.arrowID);
+        if (Time.time < _nextClickTime || _succeededArrowIds.Contains(message.arrowID))
+        {
+            return;
+        }
+
         if (CheckArrowCanMove(message.arrowID))
         {
-            AddScore();
+            _succeededArrowIds.Add(message.arrowID);
             EventCenter.Broadcast<Events.OnArrowClickSucceed>(new Events.OnArrowClickSucceed{
                 arrowID = message.arrowID,
             });
         }
         else
         {
+            _nextClickTime = Time.time + 0.5f;
             EventCenter.Broadcast<Events.OnArrowClickFail>(new Events.OnArrowClickFail{
                 arrowID = message.arrowID,
             });

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ArrowBody : MonoBehaviour
 {
@@ -20,15 +21,25 @@ public class ArrowBody : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !IsPointerOverUI())
         {
             TryClick(Input.mousePosition);
         }
 
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && !IsPointerOverUI(Input.GetTouch(0).fingerId))
         {
             TryClick(Input.GetTouch(0).position);
         }
+    }
+
+    private bool IsPointerOverUI(int fingerId = -1)
+    {
+        if (EventSystem.current == null)
+        {
+            return false;
+        }
+
+        return fingerId >= 0 ? EventSystem.current.IsPointerOverGameObject(fingerId) : EventSystem.current.IsPointerOverGameObject();
     }
 
     private void TryClick(Vector2 screenPosition)
