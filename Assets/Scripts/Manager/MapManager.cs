@@ -115,6 +115,9 @@ public class MapManager : MonoBehaviour
             return;
         }
         GameMapSO map = _mapDic[mapID];
+        
+        GameManager.Instance.SetTargetScore(map.lines.Count);
+
         for (int i = 0; i < map.lines.Count; i++)
         {
             Line line = map.lines[i];

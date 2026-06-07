@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -14,6 +15,31 @@ public class GameManager : MonoBehaviour
     [Header("表示箭身消失的时间，越小速度越快")]
     public float reduceTime = 0.1f;
     public float moveSpeed => (0.4f / reduceTime);
+    private int _targetScore;
+    public void SetTargetScore(int score){
+        _targetScore = score;
+        _currentScore = 0;
+        _hasTriggeredWin = false;
+    }
+    private int _currentScore = 0;
+    private float _scoreTime = 3f;
+    private bool _hasTriggeredWin;
+    public void AddScore()
+    {
+        _currentScore++;
+        if(!_hasTriggeredWin && _currentScore >= _targetScore)
+        {
+            BroadcastGameWinDelay().Forget();
+        }
+    }
+
+    private async UniTask BroadcastGameWinDelay()
+    {
+        _hasTriggeredWin = true;
+        await UniTask.Delay(TimeSpan.FromSeconds(2));
+        EventCenter.Broadcast<Events.OnGameWin>(new Events.OnGameWin());
+    }
+
 
     private void Awake()
     {
@@ -62,6 +88,7 @@ public class GameManager : MonoBehaviour
         Debug.Log(message.arrowID);
         if (CheckArrowCanMove(message.arrowID))
         {
+            AddScore();
             EventCenter.Broadcast<Events.OnArrowClickSucceed>(new Events.OnArrowClickSucceed{
                 arrowID = message.arrowID,
             });
